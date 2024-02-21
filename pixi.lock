@@ -303,17 +303,22 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstd-1.5.5-h12be248_0.conda
       - pypi: https://files.pythonhosted.org/packages/18/94/56fd1175b2af7269711f9485d74e5f29e30611ee325af886722025df0bf5/simplug-0.3.2-py3-none-any.whl#sha256=8897b7bb41c0527bc58cdad11d19d6b4bc9efe4e5076363eb25b514e6f83beaa
       - pypi: https://files.pythonhosted.org/packages/27/8d/89edc1995125b85150936fd689e4b71f55a559f074b7710cf520c45a6275/datar_numpy-0.3.4-py3-none-any.whl#sha256=14eb8139e892e4c3ca6ee4fe6326fd55857d9695d0432112416d4efdbe70c564
+      - pypi: https://files.pythonhosted.org/packages/51/c0/00c9809d8b9346eb238a6bbd5f83e846a4ce4503da94a4c08cb7284c325b/multipledispatch-1.0.0-py3-none-any.whl#sha256=0c53cd8b077546da4e48869f49b13164bebafd0c2a5afceb6bb6a316e7fb46e4
       - pypi: https://files.pythonhosted.org/packages/59/91/aa6bde563e0085a02a435aa99b49ef75b0a4b062635e606dab23ce18d720/inflection-0.5.1-py2.py3-none-any.whl#sha256=f38b2b640938a4f35ade69ac3d053042959b62a0f1076a5bbaa1b9526605a8a2
       - pypi: https://files.pythonhosted.org/packages/5a/60/804a0e78edf338a6f1cf6922f7a8700da4eecca64ef5706b2db8d41346f2/python_simpleconf-0.6.0-py3-none-any.whl#sha256=40e73fbd60d84ff45d22fcd8f7e2ade5fcca65559f8d9865e7750d8bcfadd209
         extras:
         - toml
+      - pypi: https://files.pythonhosted.org/packages/67/1a/bfb5574b215f530c7ac5be684f33d60b299abbebd763c203aa31755f2fb2/pandas_flavor-0.6.0-py3-none-any.whl#sha256=a32c9e2e0da702579320cf2bd0078cee91807713bc9c65ff522f6b0289899893
       - pypi: https://files.pythonhosted.org/packages/76/8f/10431c73e0e31d84e3e71264389787fe7e3cf6b3678e57684862af7d4f01/pipda-0.13.1-py3-none-any.whl#sha256=9e9046ac507ad03ced7b63e09e2468bdc2c863c01d44233c5502b4f450461893
+      - pypi: https://files.pythonhosted.org/packages/89/b4/847d9ac74a0fb18461365e97effd18c730f012f6498b482fa25b30894b8b/pyjanitor-0.26.0-py3-none-any.whl#sha256=ce91fbf75cde29a8201f34e43b20436fee40d27c5f2d879db7f13384c81111ec
       - pypi: https://files.pythonhosted.org/packages/8e/34/98edb1a36df6dda6ebaa100e54e65dde5ccfb85e6efd0d7c23113c9604ef/diot-0.2.3-py3-none-any.whl#sha256=defd4556bd961327cbfd497f63fcb9d0d79a649bbc8932f26d94dd25a7832e1c
       - pypi: https://files.pythonhosted.org/packages/bb/69/b1d68cdf6c8763b3912090c9c1eac6a12db2758ab4bfdabc89d8adae042b/pdtypes-0.2.2-py3-none-any.whl#sha256=dce5239a2782790c3291ba69c1e07ed94d2ab5a4050f451e5f6c207e0639ae3f
+      - pypi: https://files.pythonhosted.org/packages/d4/b5/2af411546a4c2be8d6315bc01be055fbad367bc9c57dbd773ad05db62b1c/xarray-2024.1.1-py3-none-any.whl#sha256=0bec81303b088c8df4f075e1579c00cfd7e5069688e4434007f0b8d7df17fc1c
       - pypi: https://files.pythonhosted.org/packages/ee/8a/43f0890cb54ad20f78a9a5dd586904c03cd5e7f6a6392d166fa6f05fe855/datar-0.15.5-py3-none-any.whl#sha256=e024a87837bdd1514b96556f639b7f9c0f9664383d773337eb363ee05d9068b5
         extras:
         - numpy
         - pandas
+      - pypi: https://files.pythonhosted.org/packages/ef/82/7a9d0550484a62c6da82858ee9419f3dd1ccc9aa1c26a1e43da3ecd20b0d/natsort-8.4.0-py3-none-any.whl#sha256=4732914fb471f56b5cce04d7bae6f164a592c7712e1c85f9ef585e197299521c
       - pypi: https://files.pythonhosted.org/packages/fe/ae/8081e0962f41b2e41d41d6ab6f58a9491d01b9e21712a716b46b29fab630/datar_pandas-0.5.4-py3-none-any.whl#sha256=b80d7ec1bdbe19b375f67fd16e3026b9e41aa406f884125d6d446949752b808c
 packages:
 - kind: conda
@@ -3871,6 +3876,11 @@ packages:
   md5: b0309b72560df66f71a9d5e34a5efdfa
   size: 3227
   timestamp: 1608166968312
+- kind: pypi
+  name: multipledispatch
+  version: 1.0.0
+  url: https://files.pythonhosted.org/packages/51/c0/00c9809d8b9346eb238a6bbd5f83e846a4ce4503da94a4c08cb7284c325b/multipledispatch-1.0.0-py3-none-any.whl#sha256=0c53cd8b077546da4e48869f49b13164bebafd0c2a5afceb6bb6a316e7fb46e4
+  sha256: 0c53cd8b077546da4e48869f49b13164bebafd0c2a5afceb6bb6a316e7fb46e4
 - kind: conda
   name: munkres
   version: 1.1.4
@@ -3886,6 +3896,15 @@ packages:
   license_family: Apache
   size: 12452
   timestamp: 1600387789153
+- kind: pypi
+  name: natsort
+  version: 8.4.0
+  url: https://files.pythonhosted.org/packages/ef/82/7a9d0550484a62c6da82858ee9419f3dd1ccc9aa1c26a1e43da3ecd20b0d/natsort-8.4.0-py3-none-any.whl#sha256=4732914fb471f56b5cce04d7bae6f164a592c7712e1c85f9ef585e197299521c
+  sha256: 4732914fb471f56b5cce04d7bae6f164a592c7712e1c85f9ef585e197299521c
+  requires_dist:
+  - fastnumbers >=2.0.0 ; extra == 'fast'
+  - PyICU >=1.0.0 ; extra == 'icu'
+  requires_python: '>=3.7'
 - kind: conda
   name: nbclient
   version: 0.8.0
@@ -4236,6 +4255,14 @@ packages:
   license_family: BSD
   size: 14202823
   timestamp: 1705729643544
+- kind: pypi
+  name: pandas-flavor
+  version: 0.6.0
+  url: https://files.pythonhosted.org/packages/67/1a/bfb5574b215f530c7ac5be684f33d60b299abbebd763c203aa31755f2fb2/pandas_flavor-0.6.0-py3-none-any.whl#sha256=a32c9e2e0da702579320cf2bd0078cee91807713bc9c65ff522f6b0289899893
+  sha256: a32c9e2e0da702579320cf2bd0078cee91807713bc9c65ff522f6b0289899893
+  requires_dist:
+  - pandas >=0.23
+  - xarray
 - kind: conda
   name: pandoc
   version: 3.1.11.1
@@ -4674,6 +4701,65 @@ packages:
   - pkg:pypi/pygments
   size: 860425
   timestamp: 1700608076927
+- kind: pypi
+  name: pyjanitor
+  version: 0.26.0
+  url: https://files.pythonhosted.org/packages/89/b4/847d9ac74a0fb18461365e97effd18c730f012f6498b482fa25b30894b8b/pyjanitor-0.26.0-py3-none-any.whl#sha256=ce91fbf75cde29a8201f34e43b20436fee40d27c5f2d879db7f13384c81111ec
+  sha256: ce91fbf75cde29a8201f34e43b20436fee40d27c5f2d879db7f13384c81111ec
+  requires_dist:
+  - natsort
+  - pandas-flavor
+  - multipledispatch
+  - scipy
+  - biopython ; extra == 'all'
+  - isort >=4.3.18 ; extra == 'all'
+  - mkdocs ; extra == 'all'
+  - mkdocstrings >=0.19.0 ; extra == 'all'
+  - hypothesis >=4.4.0 ; extra == 'all'
+  - pytest >=3.4.2 ; extra == 'all'
+  - tqdm ; extra == 'all'
+  - mkdocstrings-python ; extra == 'all'
+  - mkdocs-material ; extra == 'all'
+  - pyspark ; extra == 'all'
+  - black >=19.3b0 ; extra == 'all'
+  - darglint ; extra == 'all'
+  - unyt ; extra == 'all'
+  - py >=1.10.0 ; extra == 'all'
+  - pip-tools ; extra == 'all'
+  - pytest-xdist ; extra == 'all'
+  - flake8 ; extra == 'all'
+  - pytest-cov ; extra == 'all'
+  - pre-commit ; extra == 'all'
+  - ipython >7.31.1 ; extra == 'all'
+  - interrogate ; extra == 'all'
+  - pandas-vet ; extra == 'all'
+  - biopython ; extra == 'biology'
+  - tqdm ; extra == 'chemistry'
+  - pip-tools ; extra == 'dev'
+  - pre-commit ; extra == 'dev'
+  - isort >=4.3.18 ; extra == 'dev'
+  - black >=19.3b0 ; extra == 'dev'
+  - darglint ; extra == 'dev'
+  - flake8 ; extra == 'dev'
+  - mkdocs ; extra == 'docs'
+  - mkdocs-material ; extra == 'docs'
+  - mkdocstrings >=0.19.0 ; extra == 'docs'
+  - mkdocstrings-python ; extra == 'docs'
+  - ipython >7.31.1 ; extra == 'docs'
+  - biopython ; extra == 'docs'
+  - tqdm ; extra == 'docs'
+  - unyt ; extra == 'docs'
+  - pyspark ; extra == 'docs'
+  - unyt ; extra == 'engineering'
+  - pyspark ; extra == 'spark'
+  - pytest-cov ; extra == 'test'
+  - pytest-xdist ; extra == 'test'
+  - pytest >=3.4.2 ; extra == 'test'
+  - hypothesis >=4.4.0 ; extra == 'test'
+  - interrogate ; extra == 'test'
+  - pandas-vet ; extra == 'test'
+  - py >=1.10.0 ; extra == 'test'
+  requires_python: '>=3.6'
 - kind: conda
   name: pyparsing
   version: 3.1.1
@@ -5853,6 +5939,34 @@ packages:
   license: MIT
   license_family: MIT
   size: 1176306
+- kind: pypi
+  name: xarray
+  version: 2024.1.1
+  url: https://files.pythonhosted.org/packages/d4/b5/2af411546a4c2be8d6315bc01be055fbad367bc9c57dbd773ad05db62b1c/xarray-2024.1.1-py3-none-any.whl#sha256=0bec81303b088c8df4f075e1579c00cfd7e5069688e4434007f0b8d7df17fc1c
+  sha256: 0bec81303b088c8df4f075e1579c00cfd7e5069688e4434007f0b8d7df17fc1c
+  requires_dist:
+  - numpy >=1.23
+  - packaging >=22
+  - pandas >=1.5
+  - scipy ; extra == 'accel'
+  - bottleneck ; extra == 'accel'
+  - numbagg ; extra == 'accel'
+  - flox ; extra == 'accel'
+  - opt-einsum ; extra == 'accel'
+  - xarray[accel,io,parallel,viz] ; extra == 'complete'
+  - netCDF4 ; extra == 'io'
+  - h5netcdf ; extra == 'io'
+  - scipy ; extra == 'io'
+  - zarr ; extra == 'io'
+  - fsspec ; extra == 'io'
+  - cftime ; extra == 'io'
+  - pooch ; extra == 'io'
+  - pydap ; python_version < '3.10' and extra == 'io'
+  - dask[complete] ; extra == 'parallel'
+  - matplotlib ; extra == 'viz'
+  - seaborn ; extra == 'viz'
+  - nc-time-axis ; extra == 'viz'
+  requires_python: '>=3.9'
 - kind: conda
   name: xerces-c
   version: 3.2.5

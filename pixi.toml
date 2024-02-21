@@ -27,3 +27,4 @@ Imageio = ">=2.34.0,<2.35"
 
 [pypi-dependencies]
 datar = { version = ">=0.15.5,<0.16", extras = ["numpy", "pandas"] } # dplyr
+pyjanitor = ">=0.26.0, <0.27"
