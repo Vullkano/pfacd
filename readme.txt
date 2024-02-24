@@ -1,1 +1,5 @@
-TODO readme, https://iscteiul365-my.sharepoint.com/:f:/g/personal/apfsa3_iscte-iul_pt/EpcA9r03LrhHnHyFrdX-M_4BkfekGLpinVK2md39joCadw?e=jxNIxI
+TODO readme,
+
+* https://typst.app/project/rcC4WF_ngbODA1rcott86J relatorios de situação e planos de semana
+* Onedrive encontra-se no email de cada membro
+* 
