@@ -38,30 +38,31 @@ import csv
 with open('links_eredes.txt', 'r') as txt:
     links = ["https://www.e-redes.pt"+line.strip() for line in txt]
 
-url = ["https://www.e-redes.pt/sites/eredes/files/2023-04/Evento%20Excecional%20Tabela%20Decis%C3%A3o%20Temporal%20Regi%C3%A3o%20Sul%202022.pdf"]
 blabl = 0
 space = ["  ","   ","  ","  ","   "]
-
-for link in url:
-    response = requests.get(link)
-    a = link.split("/")[-1]
-    if response.status_code == 200:
-        with pdfplumber.open(BytesIO(response.content)) as pdf:
-            with open('output.csv', 'w', newline='') as csvfile:
-                writer = csv.writer(csvfile)
-                
-                for i, page in enumerate(pdf.pages):
-                    tables = page.extract_tables()
-                    for table in tables:
-                        for row in table:
-                            if blabl == 0:
-                                row.append('freguesia')
-                                writer.writerow(row)
-                                blabl += 1
-                            else:
-                                row.append(f'{a}')
-                                writer.writerow(row)
-                        writer.writerow(space)
-                            
-    else:
-        print("Falha ao baixar o PDF")
+counts = 0
+with open('output.csv', 'w', newline='') as csvfile:
+    writer = csv.writer(csvfile)
+    for link in links:
+        response = requests.get(link)
+        a = link.split("/")[-1]
+        if response.status_code == 200:
+            print(counts,"/",len(links))
+            counts +=1
+            with pdfplumber.open(BytesIO(response.content)) as pdf:
+                    
+                    for i, page in enumerate(pdf.pages):
+                        tables = page.extract_tables()
+                        for table in tables:
+                            for row in table:
+                                if blabl == 0:
+                                    row.append('freguesia')
+                                    writer.writerow(row)
+                                    blabl += 1
+                                else:
+                                    row.append(f'{a}')
+                                    writer.writerow(row)
+                            writer.writerow(space)
+                                
+        else:
+            print("Falha ao baixar o PDF")
