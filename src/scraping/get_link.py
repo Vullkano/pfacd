@@ -4505,6 +4505,7 @@ def plancholas():
     soup = BeautifulSoup(html, 'html.parser')
     divs = soup.find_all('span', {'class': 'file file--mime-application-pdf file--application-pdf'})
     for div in divs:
+        link = div.find('a')['href']
         links.append(link)
     with open('links_eredes.txt', 'w') as file:
         for word in links:
