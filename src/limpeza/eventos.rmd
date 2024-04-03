@@ -1,0 +1,88 @@
+```{r}
+library(tidyverse)
+library(here)
+library(janitor)
+library(conflicted)
+library(readxl)
+conflicts_prefer(dplyr::filter)
+library(pak)
+```
+
+```{r}
+eventos <- here("data", "allEventos.xlsx")
+
+read_excel(eventos, enco) %>% clean_names() -> data
+data
+```
+
+```{r}
+data %>% 
+  filter(!str_detect(duracao_incidente_min, r"{^\d+$}") | !str_detect(n_o_clientes_afectados, r"{^\d+$}")) %>% 
+  select(codigo_do_relatorio, duracao_incidente_min, n_o_clientes_afectados) 
+# change excel until this is 0
+```
+
+```{r}
+dataCR <- data %>% 
+  mutate(codigo_do_relatorio = str_replace_all(codigo_do_relatorio, " ", "_")) %>% 
+  mutate(codigo_do_relatorio = str_replace_all(codigo_do_relatorio, "(?:_){2,}", "_")) %>%
+  mutate(codigo_do_relatorio = str_replace_all(codigo_do_relatorio, "FREDES", "EREDES")) %>%
+  mutate(codigo_do_relatorio = str_replace_all(codigo_do_relatorio, "EDP0|EDPI3", "EDPD")) %>%
+  mutate(codigo_do_relatorio = str_replace_all(codigo_do_relatorio, r"{([A-Z]{3})T}", r"{\1_T}")) %>%
+  mutate(codigo_do_relatorio = str_replace_all(codigo_do_relatorio, r"{T(\d)}", r"{T_\1}")) %>%
+  mutate(codigo_do_relatorio = str_replace_all(codigo_do_relatorio, r"{^(EREDES|EDPD)(\d+)}", r"{\1_\2}")) %>%
+  mutate(codigo_do_relatorio = str_replace_all(codigo_do_relatorio, r"{\r\n_}", r"{}")) %>% 
+  mutate(codigo_do_relatorio = str_replace_all(codigo_do_relatorio, r"{_\d{4}([A-Z]{3})}", r"{_\1}")) %>% 
+  mutate(codigo_do_relatorio = str_replace_all(codigo_do_relatorio, r"{EDPD_([A-Z])}", r"{EDPD_2020_\1}")) %>% 
+  mutate(codigo_do_relatorio = str_replace_all(codigo_do_relatorio, "201t", "2018"))
+  
+dataCR %>% filter(!str_detect(codigo_do_relatorio, r"{^(EREDES|EDPD)_\d{4}_[A-Z]{3}_(T|TC)_\d+$}"))
+# cleanup rest in excel
+```
+
+```{r}
+# pak("shug0131/cctu")
+library(cctu)
+dataCR %>% detect_invalid_utf8()
+# deve ser 0
+```
+
+
+
+```{r}
+library(fastverse)
+dataCR %>% 
+  mutate(nt = fct(fcase(
+    nivel_de_tensao == "AT MT BT", "AT MT BT",
+    grepl("B", nivel_de_tensao), "BT", 
+    grepl("M", nivel_de_tensao), "MT", 
+    grepl("A", nivel_de_tensao), "AT"))) %>% 
+  mutate(aprovado = ifelse(decisao_preliminar == "Aprovado", T, F)) -> dataNT
+dataNT %>% select(nivel_de_tensao, nt, aprovado)
+dataNT %<>% select(-nivel_de_tensao, -decisao_preliminar)
+```
+
+```{r}
+dataNT %>% tabyl(nt, aprovado) %>% adorn_totals("row") %>% adorn_totals("col")
+print("")
+dataNT %>% tabyl(nt, aprovado) %>% adorn_percentages("all") %>% adorn_totals("row") %>% adorn_totals("col") %>% adorn_pct_formatting(digits = 2)
+```
+
+```{r}
+# encontrar linhas com codigos repetidos
+dataNT %>% 
+  group_by(codigo_do_relatorio) %>% 
+  mutate(n = n()) %>%
+  relocate(codigo_do_relatorio, n) %>% 
+  arrange(-n, codigo_do_relatorio, ) -> to_excel
+to_excel
+```
+Pog tão uma porcaria, melhor é exportar para excel e fazer lá
+
+
+```{r}
+library(writexl)
+to_excel %>% write_xlsx(here("data", "eventos_with_counts.xlsx"))
+```
+
+
