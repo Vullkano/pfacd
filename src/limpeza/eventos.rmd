@@ -5,13 +5,20 @@ library(janitor)
 library(conflicted)
 library(readxl)
 conflicts_prefer(dplyr::filter)
+conflicts_prefer(lubridate::year)
+conflicts_prefer(lubridate::month)
+conflicts_prefer(lubridate::day)
+conflicts_prefer(lubridate::hour)
+conflicts_prefer(lubridate::minute)
+conflicts_prefer(lubridate::second)
+conflicts_prefer(janitor::clean_names)
 library(pak)
 ```
 
 ```{r}
 eventos <- here("data", "allEventos.xlsx")
 
-read_excel(eventos, enco) %>% clean_names() -> data
+read_excel(eventos) %>% clean_names() -> data
 data
 ```
 
@@ -67,17 +74,102 @@ dataNT %>% tabyl(nt, aprovado) %>% adorn_totals("row") %>% adorn_totals("col")
 print("")
 dataNT %>% tabyl(nt, aprovado) %>% adorn_percentages("all") %>% adorn_totals("row") %>% adorn_totals("col") %>% adorn_pct_formatting(digits = 2)
 ```
+there are some data_do_incidente que a data nao corresponde ao mso do relatorio (tá trocado(ABR em alguns está 04/02 em vês de 02/04))
+
+```{r}
+# 
+# PRIMEIRO EXTRAIR MES DO CODIGO (r"{^(EREDES|EDPD)_\d{4}_[A-Z]{3}_(T|TC)_\d+$}") (corresponde ao [A-Z])
+# TÁ EM JAN FEV ETC
+# PTT TRANSFORMAR PRA NUMERO
+# dps tirar numero da data atual e comparar
+# rodar dia e mes quando esta incorreto
+temp <- dataNT %>% 
+  mutate(month_codigo = str_extract(codigo_do_relatorio, r"{^(EREDES|EDPD)_\d{4}_([A-Z]{3})_T|TC_\d+$}", 2)) %>% 
+  mutate(month_codigo = fcase(
+    month_codigo == "JAN", 1,
+    month_codigo == "FEV", 2,
+    month_codigo == "MAR", 3,
+    month_codigo == "ABR", 4,
+    month_codigo == "MAI", 5,
+    month_codigo == "JUN", 6,
+    month_codigo == "JUL", 7,
+    month_codigo == "AGO", 8,
+    month_codigo == "SET", 9,
+    month_codigo == "OUT", 10,
+    month_codigo == "NOV", 11,
+    month_codigo == "DEZ", 12, default = 0)) -> temp
+temp %>% filter(month_codigo > 12 | month_codigo < 1) %>% select(codigo_do_relatorio, month_codigo)
+temp %>% filter(month(data_do_incidente, label= F) != month_codigo) %>% select(codigo_do_relatorio, data_do_incidente, month_codigo)
+dataDs <- temp %>% 
+  filter(month_codigo != 0) %>%
+  mutate(data_do_incidente = as_datetime(data_do_incidente)) %>%
+  mutate(month_data = month(data_do_incidente)) %>%
+  mutate(data_do_incidente = ifelse(month_codigo != month_data,
+    make_datetime(
+      year(data_do_incidente), 
+      day(data_do_incidente),
+      month(data_do_incidente),
+      hour(data_do_incidente),
+      minute(data_do_incidente),
+      second(data_do_incidente)
+    ),
+    data_do_incidente) %>% as_datetime()) 
+dataDs %>% filter(month_codigo != month(data_do_incidente)) %>% select(codigo_do_relatorio, month_codigo, data_do_incidente, month_data) -> temp
+temp %<>% 
+  add_row(codigo_do_relatorio = "EDPD_2019_MAR_T_21") %>% 
+  add_row(codigo_do_relatorio = "EDPD_2019_SET_T_13") %>%
+  add_row(codigo_do_relatorio = "EDPD_2019_SET_T_15") %>% 
+  add_row(codigo_do_relatorio = "EDPD_2019_FEV_TC_1") %>%
+  add_row(codigo_do_relatorio = "EDPD_2019_FEV_T_1") %>%
+  add_row(codigo_do_relatorio = "EDPD_2019_FEV_T_2") %>%
+  add_row(codigo_do_relatorio = "EDPD_2019_FEV_T_3") %>%
+  add_row(codigo_do_relatorio = "EDPD_2019_FEV_T_4") %>%
+  add_row(codigo_do_relatorio = "EDPD_2019_FEV_T_5") %>%
+  add_row(codigo_do_relatorio = "EDPD_2019_FEV_T_6") %>%
+  add_row(codigo_do_relatorio = "EDPD_2019_FEV_T_8") %>%
+  add_row(codigo_do_relatorio = "EDPD_2019_FEV_T_9") %>%
+  add_row(codigo_do_relatorio = "EDPD_2019_FEV_T_10") %>%
+  add_row(codigo_do_relatorio = "EDPD_2019_FEV_T_40") %>%
+  add_row(codigo_do_relatorio = "EDPD_2019_AGO_TC_1") %>%
+  add_row(codigo_do_relatorio = "EDPD_2019_ABR_T_2")
+```
+n sei o q fazer, vou so por nulls (dps por no sprint)
+```{r}
+# remove where in temp (with id)
+dataDss <- dataDs %>% 
+  select(-month_codigo, -month_data) %>% 
+  mutate(data_do_incidente = ifelse(codigo_do_relatorio %in% temp$codigo_do_relatorio, NA, data_do_incidente) %>% as_datetime())
+dataDss
+```
 
 ```{r}
 # encontrar linhas com codigos repetidos
-dataNT %>% 
+dataDss %>% 
+  # add line number
+  mutate(l = row_number()) %>%
   group_by(codigo_do_relatorio) %>% 
-  mutate(n = n()) %>%
-  relocate(codigo_do_relatorio, n) %>% 
-  arrange(-n, codigo_do_relatorio, ) -> to_excel
+  mutate(n = n(), lines = paste(l + 1, collapse = ", ")) %>%
+  relocate(codigo_do_relatorio, n, lines) %>% 
+  arrange(-n, codigo_do_relatorio) -> to_excel
 to_excel
 ```
-Pog tão uma porcaria, melhor é exportar para excel e fazer lá
+
+Quando repetido, mudar a data do repetido para a data que tiver hora (se uma tiver e a outra não (o que nao tem hora tá 00:00))
+```{r}
+# TODO
+```
+
+
+ver quais faltam repetidos
+```{r}
+# show in what columsn it's distinct
+to_excel %>% 
+  filter(n > 1) %>% 
+  select(-qualidade_de_servico_comercial, -qualidade_de_energia_eletrica, -fundamentacao, -l) %>% 
+  filter(n_distinct(across(everything())) > 1)
+```
+^^^^^^^^^^^^^^^^^^^^
+ARRANJAR ESTES MANUAL
 
 
 ```{r}
@@ -85,4 +177,6 @@ library(writexl)
 to_excel %>% write_xlsx(here("data", "eventos_with_counts.xlsx"))
 ```
 
-
+FALTA VER QUAIS MESES FALTAM (fazer grafico de barras com meses que faltam)
+FALTA TIRAR REPETIDOS
+FALTA EXPORTAR
