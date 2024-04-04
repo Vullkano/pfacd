@@ -6,6 +6,7 @@ library(conflicted)
 library(readxl)
 library(pak)
 library(tidyfast)
+library(magrittr)
 conflicts_prefer(dplyr::filter)
 conflicts_prefer(lubridate::year)
 conflicts_prefer(lubridate::month)
@@ -24,10 +25,12 @@ read_xlsx(eventos, col_types = c(rep("text", 2), "text", rep("guess", 17-3), "sk
 data
 data %<>% mutate(
   data_isNA = is.na(data_do_incidente),
-  data_do_incidente = parse_date_time(data_do_incidente,orders = c("%d/%m/%Y %H:%M:%S", "%d/%m/%Y","%d/%m/%Y %H:%M"), exact =T)
+  data_do_incidente = parse_date_time(data_do_incidente,orders = c("%d/%m/%Y %H:%M:%S", "%d/%m/%Y","%d/%m/%Y %H:%M", "%Y%m%d.0", "%Y-%m-%d", "%d-%m-%Y"), exact =T)
 )
 data %>% filter(!data_isNA) %>% filter(data_do_incidente %>% is.na)
 data %<>% select(-data_isNA)
+data[data$codigo_do_relatorio == "EDPD_2015_DEZ_T_005","data_do_incidente"] <- dmy("15/12/2015")
+data[data$codigo_do_relatorio == "EDPD_2014_AGO_T_097","data_do_incidente"] <- dmy("01/08/2014")
 data
 ```
 
@@ -51,7 +54,8 @@ dataCR <- data %>%
   mutate(codigo_do_relatorio = str_replace_all(codigo_do_relatorio, r"{\r\n_}", r"{}")) %>% 
   mutate(codigo_do_relatorio = str_replace_all(codigo_do_relatorio, r"{_\d{4}([A-Z]{3})}", r"{_\1}")) %>% 
   mutate(codigo_do_relatorio = str_replace_all(codigo_do_relatorio, r"{EDPD_([A-Z])}", r"{EDPD_2020_\1}")) %>% 
-  mutate(codigo_do_relatorio = str_replace_all(codigo_do_relatorio, "201t", "2018"))
+  mutate(codigo_do_relatorio = str_replace_all(codigo_do_relatorio, "201t", "2018")) %>% 
+  mutate(codigo_do_relatorio = str_replace_all(codigo_do_relatorio, "0UT", "OUT"))
   
 dataCR %>% filter(!str_detect(codigo_do_relatorio, r"{^(EREDES|EDPD)_\d{4}_[A-Z]{3}_(T|TC)_\d+$}"))
 # cleanup rest in excel
@@ -70,6 +74,7 @@ dataCR %>% detect_invalid_utf8()
 library(fastverse)
 dataCR %>% 
   mutate(nt = fct(fcase(
+    nivel_de_tensao == "I", "BT", # eu acho que I é == BT (tipo I) (n tenho a certeza do que fazer sobre isso)
     nivel_de_tensao == "AT MT BT", "AT MT BT",
     grepl("B", nivel_de_tensao), "BT", 
     grepl("M", nivel_de_tensao), "MT", 
@@ -77,6 +82,7 @@ dataCR %>%
   mutate(aprovado = ifelse(decisao_preliminar == "Aprovado", T, F)) -> dataNT
 dataNT %>% select(nivel_de_tensao, nt, aprovado)
 dataNT %<>% select(-nivel_de_tensao, -decisao_preliminar)
+dataNT %>% filter(nt %>% is.na)
 ```
 
 ```{r}
@@ -159,11 +165,21 @@ encontrarRepetidos <- function(d) {
     group_by(codigo_do_relatorio) %>% 
     mutate(n = n(), lines = paste(l + 1, collapse = ", ")) %>%
     relocate(l, codigo_do_relatorio, n, lines) %>% 
+    filter(n > 1) %>% 
     arrange(-n, codigo_do_relatorio)
 }
 repetidos <- dataDss %>% encontrarRepetidos
 repetidos
 ```
+Há aqui 2 outlier q são uma merda (EDPD_2016_FEV_T_085 e EDPD_2015_NOV_T_058), ptt melhor e tirar estes
+
+```{r}
+dataDssS <- dataDss %>% 
+  filter(codigo_do_relatorio != "EDPD_2016_FEV_T_085" & codigo_do_relatorio != "EDPD_2015_NOV_T_058")
+repetidos <- dataDssS %>% encontrarRepetidos
+repetidos
+```
+
 
 Quando repetido, mudar a data do repetido para a data que tiver hora (se uma tiver e a outra não (o que nao tem hora tá 00:00))
 ```{r}
@@ -183,11 +199,11 @@ datas_corretas
 ```
 
 ```{r}
-dataDssR <- dataDss %>% 
+dataDssSR <- dataDssS %>% 
   left_join(datas_corretas %>% select(codigo_do_relatorio, data_pra_por), by = "codigo_do_relatorio") %>%
   mutate(data_do_incidente = ifelse(!is.na(data_pra_por), data_pra_por, data_do_incidente) %>% as_datetime()) %>%
   select(-data_pra_por)
-dataDssR %>% encontrarRepetidos %>% arrange(n, codigo_do_relatorio) %>% filter(n > 1)
+dataDssSR %>% encontrarRepetidos %>% arrange(n, codigo_do_relatorio) %>% filter(n > 1)
 ```
 
 
@@ -196,7 +212,7 @@ ver quais faltam repetidos
 
 ```{r}
 # show in what columsn it's distinct
-dataDssR %>% 
+dataDssSR %>% 
   encontrarRepetidos %>%
   filter(n > 1) %>% 
   select(-qualidade_de_servico_comercial, -qualidade_de_energia_eletrica, -fundamentacao, -l) %>% 
@@ -225,6 +241,42 @@ library(writexl)
 toFix %>% write_xlsx(here("data", "eventos_repetidos_diferetes.xlsx"))
 ```
 
-FALTA VER QUAIS MESES FALTAM (fazer grafico de barras com meses que faltam)
-FALTA TIRAR REPETIDOS
-FALTA EXPORTAR
+```{r}
+# tirar repetidos
+dataDssSR %>% distinct(across(codigo_do_relatorio:saidi_bt_min), nt, aprovado) -> dataDssSRD
+dataDssSRD %>% encontrarRepetidos
+```
+
+
+Agora meses que faltam
+
+```{r}
+# table month and year with count
+dataDssSR %>% 
+  mutate(month = month(data_do_incidente, label = T), year = year(data_do_incidente)) %>% 
+  tabyl(month, year) %>% 
+  adorn_totals("row") %>% 
+  adorn_totals("col")
+# now we graph this
+dataDssSR %>% 
+  mutate(month = month(data_do_incidente, label = T), year = year(data_do_incidente)) %>% 
+  select(month, year) %>%
+  ggplot(aes(x = month, y = year)) +
+  geom_count()
+```
+MUITA COISA ESTRANHA
+ya know what, fica pro freitas
+```{r}
+# ver 2015
+dataDssSR %>% 
+  filter(year(data_do_incidente) == 2015) %>% 
+  arrange(data_do_incidente)
+```
+
+E agrora exportar :)))))
+```{r}
+# pra parquet ja agr pra ficar com as datas
+library(arrow)
+write_parquet(dataDssSRD, here("data", "eventos.parquet"))
+```
+
