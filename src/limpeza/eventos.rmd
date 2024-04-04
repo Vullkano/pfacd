@@ -4,6 +4,8 @@ library(here)
 library(janitor)
 library(conflicted)
 library(readxl)
+library(pak)
+library(tidyfast)
 conflicts_prefer(dplyr::filter)
 conflicts_prefer(lubridate::year)
 conflicts_prefer(lubridate::month)
@@ -12,15 +14,23 @@ conflicts_prefer(lubridate::hour)
 conflicts_prefer(lubridate::minute)
 conflicts_prefer(lubridate::second)
 conflicts_prefer(janitor::clean_names)
-library(pak)
+conflicts_prefer(dplyr::first)
 ```
 
 ```{r}
 eventos <- here("data", "allEventos.xlsx")
-
-read_excel(eventos) %>% clean_names() -> data
+# accepted_types <- c("skip", "guess", "logical", "numeric", date", "text", "list")
+read_xlsx(eventos, col_types = c(rep("text", 2), "text", rep("guess", 17-3), "skip")) %>% clean_names() -> data
+data
+data %<>% mutate(
+  data_isNA = is.na(data_do_incidente),
+  data_do_incidente = parse_date_time(data_do_incidente,orders = c("%d/%m/%Y %H:%M:%S", "%d/%m/%Y","%d/%m/%Y %H:%M"), exact =T)
+)
+data %>% filter(!data_isNA) %>% filter(data_do_incidente %>% is.na)
+data %<>% select(-data_isNA)
 data
 ```
+
 
 ```{r}
 data %>% 
@@ -106,14 +116,14 @@ dataDs <- temp %>%
   mutate(month_data = month(data_do_incidente)) %>%
   mutate(data_do_incidente = ifelse(month_codigo != month_data,
     make_datetime(
-      year(data_do_incidente), 
-      day(data_do_incidente),
-      month(data_do_incidente),
-      hour(data_do_incidente),
-      minute(data_do_incidente),
-      second(data_do_incidente)
+      year = year(data_do_incidente), 
+      month = day(data_do_incidente),
+      day = month(data_do_incidente),
+      hour = hour(data_do_incidente),
+      min = minute(data_do_incidente),
+      sec = second(data_do_incidente)
     ),
-    data_do_incidente) %>% as_datetime()) 
+    data_do_incidente) %>% as_datetime())
 dataDs %>% filter(month_codigo != month(data_do_incidente)) %>% select(codigo_do_relatorio, month_codigo, data_do_incidente, month_data) -> temp
 temp %<>% 
   add_row(codigo_do_relatorio = "EDPD_2019_MAR_T_21") %>% 
@@ -143,38 +153,76 @@ dataDss
 ```
 
 ```{r}
-# encontrar linhas com codigos repetidos
-dataDss %>% 
-  # add line number
-  mutate(l = row_number()) %>%
-  group_by(codigo_do_relatorio) %>% 
-  mutate(n = n(), lines = paste(l + 1, collapse = ", ")) %>%
-  relocate(codigo_do_relatorio, n, lines) %>% 
-  arrange(-n, codigo_do_relatorio) -> to_excel
-to_excel
+encontrarRepetidos <- function(d) {
+  d %>% 
+    mutate(l = row_number()) %>%
+    group_by(codigo_do_relatorio) %>% 
+    mutate(n = n(), lines = paste(l + 1, collapse = ", ")) %>%
+    relocate(l, codigo_do_relatorio, n, lines) %>% 
+    arrange(-n, codigo_do_relatorio)
+}
+repetidos <- dataDss %>% encontrarRepetidos
+repetidos
 ```
 
 Quando repetido, mudar a data do repetido para a data que tiver hora (se uma tiver e a outra não (o que nao tem hora tá 00:00))
 ```{r}
-# TODO
+temp <- repetidos %>% 
+  select(-qualidade_de_servico_comercial, -qualidade_de_energia_eletrica, -fundamentacao, -l) %>%
+  filter(n_distinct(across(everything())) > 1) %>% 
+  mutate(time_is_0 = hour(data_do_incidente) == 0 & minute(data_do_incidente) == 0 & second(data_do_incidente) == 0) %>% 
+  filter(!is.na(data_do_incidente)) %>%
+  group_by(codigo_do_relatorio, time_is_0, data_do_incidente) %>%
+  summarise(n = n()) %>% arrange(codigo_do_relatorio, data_do_incidente %>% desc)
+temp %>% select(codigo_do_relatorio, n, time_is_0, data_do_incidente) %>% arrange(n, codigo_do_relatorio)
+temp %>% 
+  group_by(codigo_do_relatorio) %>%
+  summarise(n = n(), data_pra_por = first(data_do_incidente)) %>% 
+  filter(n > 1) -> datas_corretas
+datas_corretas
 ```
+
+```{r}
+dataDssR <- dataDss %>% 
+  left_join(datas_corretas %>% select(codigo_do_relatorio, data_pra_por), by = "codigo_do_relatorio") %>%
+  mutate(data_do_incidente = ifelse(!is.na(data_pra_por), data_pra_por, data_do_incidente) %>% as_datetime()) %>%
+  select(-data_pra_por)
+dataDssR %>% encontrarRepetidos %>% arrange(n, codigo_do_relatorio) %>% filter(n > 1)
+```
+
 
 
 ver quais faltam repetidos
+
 ```{r}
 # show in what columsn it's distinct
-to_excel %>% 
+dataDssR %>% 
+  encontrarRepetidos %>%
   filter(n > 1) %>% 
   select(-qualidade_de_servico_comercial, -qualidade_de_energia_eletrica, -fundamentacao, -l) %>% 
-  filter(n_distinct(across(everything())) > 1)
+  mutate(n_distinc = n_distinct(across(everything()))) %>% 
+  relocate(codigo_do_relatorio, n_distinc, lines) %>%
+  filter(n_distinc > 1) -> toFix
+toFix
+
+# find which columns differ
+toFix %>% 
+  select(-codigo_do_relatorio, -n, -n_distinc, -lines) %>% 
+  group_by(codigo_do_relatorio) %>% 
+  summarise_all(~ifelse(n_distinct(.) > 1, paste(unique(.), collapse = ", "), NA)) %>% 
+  relocate(codigo_do_relatorio) %>%
+  arrange(codigo_do_relatorio) %>% 
+  left_join(toFix %>% select(codigo_do_relatorio, lines), by = "codigo_do_relatorio") %>% 
+  relocate(codigo_do_relatorio, lines) %>% distinct() -> toFix
+toFix
 ```
 ^^^^^^^^^^^^^^^^^^^^
 ARRANJAR ESTES MANUAL
-
+Continuar quando estes tiverem 0
 
 ```{r}
 library(writexl)
-to_excel %>% write_xlsx(here("data", "eventos_with_counts.xlsx"))
+toFix %>% write_xlsx(here("data", "eventos_repetidos_diferetes.xlsx"))
 ```
 
 FALTA VER QUAIS MESES FALTAM (fazer grafico de barras com meses que faltam)
