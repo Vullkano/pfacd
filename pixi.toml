@@ -21,6 +21,11 @@ icecream = ">=2.1.3,<2.2"      # for debug
 geopandas = ">=0.14.3,<0.15"
 folium = ">=0.15.1,<0.16"      # leaflet
 Imageio = ">=2.34.0,<2.35"
+python-duckdb = ">=0.10.1,<0.11"
+python-dateutil = ">=2.9.0,<2.10"
+fuzzywuzzy = ">=0.18.0,<0.19"  # TODO REMOVE LATER
+thefuzz = ">=0.22.1,<0.23"
+unidecode = ">=1.3.8,<1.4"
 # plotnine = ">=0.12.4,<0.13"  # ggplot
 # prettymaps = ">=1.0.0,<1.1"
 # klib = ">=0.2.0,<0.3"        # data exploration lib
@@ -28,3 +33,4 @@ Imageio = ">=2.34.0,<2.35"
 [pypi-dependencies]
 datar = { version = ">=0.15.5,<0.16", extras = ["numpy", "pandas"] } # dplyr
 pyjanitor = ">=0.26.0, <0.27"
+duckdb-kernel = "*" # idk acho q n e preciso
