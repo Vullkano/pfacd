@@ -207,6 +207,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/matplotlib-inline-0.1.6-pyhd8ed1ab_0.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/linux-64/minizip-4.0.5-h0ab5242_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/mistune-3.0.2-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/mizani-0.11.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/munkres-1.1.4-pyh9f0ad1d_0.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/noarch/nbclient-0.10.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/nbconvert-7.16.3-hd8ed1ab_1.conda
@@ -231,6 +232,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/pandoc-3.1.13-ha770c72_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/pandocfilters-1.5.0-pyhd8ed1ab_0.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/noarch/parso-0.8.4-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/patsy-0.5.6-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/pcre2-10.43-hcad00b1_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/pexpect-4.9.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/pickleshare-0.7.5-py_1003.tar.bz2
@@ -239,6 +241,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/pixman-0.43.2-h59595ed_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/pkgutil-resolve-name-1.3.10-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/platformdirs-4.2.0-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/plotnine-0.13.4-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/poppler-24.03.0-h590f24d_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/poppler-data-0.4.12-hd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/postgresql-16.2-h82ecc9d_1.conda
@@ -294,6 +297,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/spdlog-1.12.0-hd2e6256_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/sqlite-3.45.2-h2c6b66d_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/stack_data-0.6.2-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/statsmodels-0.14.1-py312hc7c0aa3_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/terminado-0.18.1-pyh0d859eb_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/thefuzz-0.22.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/threadpoolctl-3.4.0-pyhc1e730c_0.conda
@@ -535,6 +539,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/matplotlib-inline-0.1.6-pyhd8ed1ab_0.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/win-64/minizip-4.0.4-h5bed578_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/mistune-3.0.2-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/mizani-0.11.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/mkl-2024.0.0-h66d3029_49657.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/msys2-conda-epoch-20160418-1.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/noarch/munkres-1.1.4-pyh9f0ad1d_0.tar.bz2
@@ -558,6 +563,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/pandoc-3.1.11.1-h57928b3_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/pandocfilters-1.5.0-pyhd8ed1ab_0.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/noarch/parso-0.8.3-pyhd8ed1ab_0.tar.bz2
+      - conda: https://conda.anaconda.org/conda-forge/noarch/patsy-0.5.6-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/pcre2-10.42-h17e33f8_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/pickleshare-0.7.5-py_1003.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/win-64/pillow-10.2.0-py312he768995_0.conda
@@ -565,6 +571,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/pixman-0.43.2-h63175ca_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/pkgutil-resolve-name-1.3.10-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/platformdirs-4.2.0-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/plotnine-0.13.4-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/poppler-24.02.0-hc2f3c52_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/poppler-data-0.4.12-hd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/postgresql-16.2-h1beaf6b_0.conda
@@ -618,6 +625,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/soupsieve-2.5-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/sqlite-3.45.1-hcfcfb64_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/stack_data-0.6.2-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/win-64/statsmodels-0.14.1-py312ha90f08f_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/tbb-2021.11.0-h91493d7_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/terminado-0.18.0-pyh5737063_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/thefuzz-0.22.1-pyhd8ed1ab_0.conda
@@ -7156,6 +7164,28 @@ packages:
   size: 66022
   timestamp: 1698947249750
 - kind: conda
+  name: mizani
+  version: 0.11.1
+  build: pyhd8ed1ab_0
+  subdir: noarch
+  noarch: python
+  url: https://conda.anaconda.org/conda-forge/noarch/mizani-0.11.1-pyhd8ed1ab_0.conda
+  sha256: 1eb36bd29c892e32bf8a34758051083835343de5c8805456119ece5d952a436a
+  md5: 570209e0312beb374c74393ce729ee60
+  depends:
+  - numpy >=1.23.0
+  - pandas >=2.1.0
+  - python >=3.9.0
+  - python-dateutil
+  - scipy >=1.7.0
+  - tzdata
+  license: BSD-3-Clause
+  license_family: BSD
+  purls:
+  - pkg:pypi/mizani
+  size: 594884
+  timestamp: 1711541586375
+- kind: conda
   name: mkl
   version: 2024.0.0
   build: h66d3029_49657
@@ -8017,6 +8047,25 @@ packages:
   size: 75191
   timestamp: 1712320447201
 - kind: conda
+  name: patsy
+  version: 0.5.6
+  build: pyhd8ed1ab_0
+  subdir: noarch
+  noarch: python
+  url: https://conda.anaconda.org/conda-forge/noarch/patsy-0.5.6-pyhd8ed1ab_0.conda
+  sha256: 35ad5cab1d9c08cf98576044bf28f75e62f8492afe6d1a89c94bbe93dc8d7258
+  md5: a5b55d1cb110cdcedc748b5c3e16e687
+  depends:
+  - numpy >=1.4.0
+  - python >=3.6
+  - six
+  license: BSD-2-Clause AND PSF-2.0
+  license_family: BSD
+  purls:
+  - pkg:pypi/patsy
+  size: 187218
+  timestamp: 1704469432353
+- kind: conda
   name: pcre2
   version: '10.42'
   build: h17e33f8_0
@@ -8253,6 +8302,29 @@ packages:
   - pkg:pypi/platformdirs
   size: 20210
   timestamp: 1706713564353
+- kind: conda
+  name: plotnine
+  version: 0.13.4
+  build: pyhd8ed1ab_1
+  build_number: 1
+  subdir: noarch
+  noarch: python
+  url: https://conda.anaconda.org/conda-forge/noarch/plotnine-0.13.4-pyhd8ed1ab_1.conda
+  sha256: 132c7cccf544182b6be16786551a9b331753d137539fd7f7f5bdb406f699185f
+  md5: 97974cd89949227666a09a819911f1dc
+  depends:
+  - matplotlib-base >=3.6.0
+  - mizani >=0.11.1,<0.12.0
+  - numpy >=1.23.0
+  - pandas >=2.1.0,<3.0.0
+  - python >=3.9.0
+  - scipy >=1.7.0
+  - statsmodels >=0.14.0
+  license: MIT
+  purls:
+  - pkg:pypi/plotnine
+  size: 5201301
+  timestamp: 1712918077536
 - kind: conda
   name: poppler
   version: 24.02.0
@@ -10009,6 +10081,54 @@ packages:
   - pkg:pypi/stack-data
   size: 26205
   timestamp: 1669632203115
+- kind: conda
+  name: statsmodels
+  version: 0.14.1
+  build: py312ha90f08f_0
+  subdir: win-64
+  url: https://conda.anaconda.org/conda-forge/win-64/statsmodels-0.14.1-py312ha90f08f_0.conda
+  sha256: 44629900f545ceb34fc0a65d7f42b16c70ecbc1db5cf82c9719eec259fb367b6
+  md5: 16f577f829d422d205396be1b774a5ee
+  depends:
+  - numpy >=1.26.2,<2.0a0
+  - packaging >=21.3
+  - pandas >=1.0,!=2.1.0
+  - patsy >=0.5.4
+  - python >=3.12,<3.13.0a0
+  - python_abi 3.12.* *_cp312
+  - scipy >=1.4,!=1.9.2
+  - ucrt >=10.0.20348.0
+  - vc >=14.2,<15
+  - vc14_runtime >=14.29.30139
+  license: BSD-3-Clause
+  license_family: BSD
+  purls:
+  - pkg:pypi/statsmodels
+  size: 11665989
+  timestamp: 1702576513759
+- kind: conda
+  name: statsmodels
+  version: 0.14.1
+  build: py312hc7c0aa3_0
+  subdir: linux-64
+  url: https://conda.anaconda.org/conda-forge/linux-64/statsmodels-0.14.1-py312hc7c0aa3_0.conda
+  sha256: 9e7f337b614e1d4ba888b27e9d7ed88afef9ee1583e4d46c2513f7e11571ff45
+  md5: 877a274575366e98a5f59e9b3e024b32
+  depends:
+  - libgcc-ng >=12
+  - numpy >=1.26.2,<2.0a0
+  - packaging >=21.3
+  - pandas >=1.0,!=2.1.0
+  - patsy >=0.5.4
+  - python >=3.12,<3.13.0a0
+  - python_abi 3.12.* *_cp312
+  - scipy >=1.4,!=1.9.2
+  license: BSD-3-Clause
+  license_family: BSD
+  purls:
+  - pkg:pypi/statsmodels
+  size: 12282248
+  timestamp: 1702575797844
 - kind: pypi
   name: tabulate
   version: 0.9.0
