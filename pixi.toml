@@ -45,4 +45,4 @@ duckdb-kernel = "*" # idk acho q n e preciso
 skimpy = "*"
 pca = "*"
 tensorflow = "*"
-eventdetector-ts = "*"
+eventdetector-ts = { git = "https://github.com/notPlancha/eventdetector.git" }
