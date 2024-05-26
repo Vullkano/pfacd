@@ -546,7 +546,6 @@ concelhos_vizinhos = {
     "Pombal": ["Alvaiázere", "Ansião", "Cantanhede", "Castanheira de Pera", "Figueira da Foz", "Leiria", "Soure"],
     "Ponta Delgada": ["Lagoa (Azores)", "Nordeste", "Ribeira Grande"],
     "Ponta do Sol (Madeira)": ["Calheta (Madeira)", "Ribeira Brava (Madeira)", "Santa Cruz (Madeira)", "São Vicente (Madeira)"],
-    "Ponta do Sol (Madeira)": ["Calheta (Madeira)", "Ribeira Brava (Madeira)", "Santa Cruz (Madeira)", "São Vicente (Madeira)"],
     "Ponte da Barca": ["Arcos de Valdevez", "Paredes de Coura", "Pontede Lima"],
     "Ponte de Lima": ["Arcos de Valdevez", "Barcelos", "Ponte da Barca"],
     "Ponte de Sor": ["Avis", "Crato", "Gavião", "Mora"],
