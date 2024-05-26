@@ -44,3 +44,5 @@ pyjanitor = ">=0.26.0, <0.27"
 duckdb-kernel = "*" # idk acho q n e preciso
 skimpy = "*"
 pca = "*"
+tensorflow = "*"
+eventdetector-ts = "*"
