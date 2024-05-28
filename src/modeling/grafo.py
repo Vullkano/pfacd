@@ -599,6 +599,10 @@ concelhos_vizinhos = {
     "Silves": ["Lagoa (Algarve)", "Lagoa (Algarve)", "Loulé", "Portimão"],
     "Sines": ["Alcácer do Sal", "Grândola", "Odemira", "Santiago do Cacém"],
 }
+# apply
+def smallest_path(start, end):
+    return nx.shortest_path(G, start, end)
+
 for concelho, vizinhos in concelhos_vizinhos.items():
     for vizinho in vizinhos:
         G.add_edge(concelho, vizinho)
@@ -606,4 +610,7 @@ for concelho, vizinhos in concelhos_vizinhos.items():
 
 # Visualizar o grafo
 nx.draw(G, with_labels=True, font_weight='bold')
-plt.show()
+
+if __name__ == "__main__":
+    print(smallest_path("Lisboa", "Porto"))
+    plt.show()
