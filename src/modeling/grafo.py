@@ -599,6 +599,10 @@ concelhos_vizinhos = {
     "Silves": ["Lagoa (Algarve)", "Lagoa (Algarve)", "Loulé", "Portimão"],
     "Sines": ["Alcácer do Sal", "Grândola", "Odemira", "Santiago do Cacém"],
 }
+from unidecode import unidecode
+def transform_concelhos(x):
+    return unidecode(x).upper().replace(' ', '-')
+concelhos_vizinhos = {transform_concelhos(k): [transform_concelhos(v) for v in vs] for k, vs in concelhos_vizinhos.items()}
 # apply
 def smallest_path(start, end):
     return nx.shortest_path(G, start, end)
@@ -607,10 +611,7 @@ for concelho, vizinhos in concelhos_vizinhos.items():
     for vizinho in vizinhos:
         G.add_edge(concelho, vizinho)
 
-
-# Visualizar o grafo
-nx.draw(G, with_labels=True, font_weight='bold')
-
 if __name__ == "__main__":
     print(smallest_path("Lisboa", "Porto"))
+    nx.draw(G, with_labels=True, font_weight='bold')
     plt.show()
