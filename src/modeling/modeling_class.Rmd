@@ -1,0 +1,106 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r}
+library(here)
+library(janitor)
+library(tidyverse)
+library(conflicted)
+# import data/EventosFinalCompleto.feather
+eventos_completo <- arrow::read_feather(here("data", "Eventos_Completo_final.feather")) %>% clean_names()
+eventos <- arrow::read_feather(here("data", "Eventos_final.feather")) %>% clean_names()
+diarios = arrow::read_feather(here("data", "Diarios_final.feather")) %>% clean_names()
+eventos_completo
+```
+
+```{r}
+diario
+```
+
+
+```{r}
+library(skimr)
+skim(diarios)
+```
+# Métrica de distância
+```{r}
+library(igraph)
+G <- read_graph(here("data", "vizinhos.gml"), format = "gml")
+G
+```
+
+```{r}
+# visualize graph
+plot(G, vertex.size=5, vertex.label.cex=0.5)
+# get vertex by label
+distancias <- distances(G)
+by_label <- function(g_, label_){
+  V(g_)[label == label_]
+}
+
+shortest_path <- function(g_, from_, to_){
+  distancias <- distances(g_)
+  distancias[by_label(g_, from_), by_label(g_, to_)]
+}
+G %>% shortest_path("FARO", "SINTRA")
+```
+
+
+
+```{r}
+distancia_entre_eventos <- function(evento_real, evento_previsto, peso = 7) {
+  # peso* distancia do concelho + 1*distancia dos dias
+  concelho_real <- evento_real$concelho
+  concelho_previsto <- evento_previsto$concelho
+  dia_real <- evento_real$data_do_incidente
+  dia_previsto <- evento_previsto$data_do_incidente
+  dist_concelho <- G %>% shortest_path(concelho_real, concelho_previsto)
+  dist_dias <- abs(as.numeric(difftime(dia_real, dia_previsto, units = "days")))
+  peso*dist_concelho + dist_dias
+}
+# test with two events
+(evento_real <- eventos %>% select(concelho, data_do_incidente) %>% head(1))
+(evento_previsto <- eventos %>% select(concelho, data_do_incidente) %>% tail(1))
+distancia_entre_eventos(evento_real, evento_previsto)
+```
+
+
+
+# Links
+```{r}
+# link predicted events and real events, optimizing sum of distances
+library(RcppHungarian)
+link_events <- function(eventos_reais, eventos_previstos){
+  # bigger nrow is row
+  if (nrow(eventos_reais) >= nrow(eventos_previstos)){
+    N <- eventos_reais
+    M <- eventos_previstos
+  } else {
+    N <- eventos_previstos
+    M <- eventos_reais
+  }
+  n <- nrow(N)
+  m <- nrow(M)
+  distancias <- matrix(0, nrow = n, ncol = m)
+  for (i in 1:n){
+    for (j in 1:m){
+      distancias[i, j] <- distancia_entre_eventos(N[i,], M[j,])
+    }
+  }
+  
+  result = RcppHungarian::HungarianSolver(distancias)
+  result$pairs
+}
+# test with 10 real events and 10 predicted events
+eventos_reais <- eventos %>% select(concelho, data_do_incidente) %>% head(10)
+eventos_previstos <- eventos %>% select(concelho, data_do_incidente) %>% tail(10)
+link_events(eventos_reais, eventos_previstos)
+```
+
+```{r}
+
+```
+
