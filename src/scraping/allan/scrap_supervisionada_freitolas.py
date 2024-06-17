@@ -56,25 +56,23 @@ def syngenta_temp_vento():
                 search_box.send_keys(char)
                 time.sleep(0.2)  #
 
+            time.sleep(5)
+            # try:
+            #     suggestion_menu = WebDriverWait(driver, 10).until(
+            #         EC.visibility_of_element_located((By.CLASS_NAME, "main-text"))
+            #     )
+            #     first_suggestion = WebDriverWait(suggestion_menu, 10).until(
+            #         EC.element_to_be_clickable((By.CLASS_NAME, "main-text"))
+            #     )
+            #     first_suggestion.click()
+            # except Exception as e:
+            #     print(f"Error with suggestions for {city}: {e}")
+            #     continue
 
-            try:
-                suggestion_menu = WebDriverWait(driver, 10).until(
-                    EC.visibility_of_element_located((By.CLASS_NAME, "ui-menu ui-widget ui-widget-content ui-autocomplete ui-front"))
-                )
-                first_suggestion = WebDriverWait(suggestion_menu, 10).until(
-                    EC.element_to_be_clickable((By.CLASS_NAME, "ui-menu-item"))
-                )
-                first_suggestion.click()
-            except Exception as e:
-                print(f"Error with suggestions for {city}: {e}")
-                continue
-
-            # Esperar pelo carregamento dos dados do tempo
             WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.CLASS_NAME, "weather-graph-chart-wrapper"))
             )
 
-            # Obter o HTML da página
             html = driver.page_source
             soup = BeautifulSoup(html, 'html.parser')
 
